@@ -1,6 +1,6 @@
 
 //const fs = require('fs');
-const http = require('http')
+const http = require('http') //Ændrer til http, fordi render håndterer https
 const express = require('express');
 const app = express();
 const socketio = require('socket.io');
@@ -15,22 +15,24 @@ app.use(express.static("public"))
 
 //we changed our express setup so we can use https
 //pass the key and cert to createServer on https
-const expressServer = http.createServer( app);
+const expressServer = http.createServer(app); //Opretter HTTP server
 //create our socket.io server... it will listen to our express port
 const io = socketio(expressServer,{
     cors: {
-        origin:'*',
+        origin:'*' , //Alle må connecte til din server
+            //"https://localhost",
+            //'https://192.168.32.7' //if using a phone or another computer
+        
         methods: ["GET", "POST"]
     }
 });
-expressServer.listen(8181,'0.0.0.0');
+expressServer.listen(8181 , '0.0.0.0');
 //Bruger Render port
 const PORT = process.env.PORT || 8181;
 
 expressServer.listen(PORT,'0.0.0.0',() => {
     console.log("Server running on port " + PORT);
 })
-
 //offers will contain {}
 const offers = [
     // offererUserName
@@ -102,6 +104,14 @@ io.on('connection',(socket)=>{
         //socket has a .to() which allows emiting to a "room"
         //every socket has it's own room
         socket.to(socketIdToAnswer).emit('answerResponse',offerToUpdate)
+        
+        // Fjern offer efter det er brugt
+        const index = offers.findIndex(o => o.offererUserName === offerObj.offererUserName);
+        if (index !== -1) 
+            {
+                offers.splice(index, 1);
+            }
+        
     })
 
     socket.on('sendIceCandidateToSignalingServer',iceCandidateObj=>{
