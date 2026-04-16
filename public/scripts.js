@@ -4,11 +4,12 @@ document.querySelector('#user-name').innerHTML = userName;
 
 //if trying it on a phone, use this instead...
 //const socket = io.connect('https://192.168.32.7:8181/',{
-const socket = io.connect('https://localhost:8181/',{
+const socket = io({
     auth: {
-        userName,password
+        userName,
+        password
     }
-})
+});
 
 const localVideoEl = document.querySelector('#local-video');
 const remoteVideoEl = document.querySelector('#remote-video');
@@ -20,14 +21,17 @@ let didIOffer = false;
 
 let peerConfiguration = {
     iceServers:[
+       {
+            urls: 'stun:stun.l.google.com:19302'
+        },
         {
-            urls:[
-              'stun:stun.l.google.com:19302',
-              'stun:stun1.l.google.com:19302'
-            ]
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
         }
     ]
 }
+
 
 //when a client initiates a call
 const call = async e=>{
