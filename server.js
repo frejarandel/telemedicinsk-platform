@@ -1,6 +1,6 @@
 
-const fs = require('fs');
-const https = require('https')
+//const fs = require('fs');
+const http = require('http')
 const express = require('express');
 const app = express();
 const socketio = require('socket.io');
@@ -10,23 +10,26 @@ app.use(express.static("public"))
 //we generated them with mkcert
 // $ mkcert create-ca
 // $ mkcert create-cert
-const key = fs.readFileSync('cert.key');
-const cert = fs.readFileSync('cert.crt');
+//const key = fs.readFileSync('cert.key');
+//const cert = fs.readFileSync('cert.crt');
 
 //we changed our express setup so we can use https
 //pass the key and cert to createServer on https
-const expressServer = https.createServer({key, cert}, app);
+const expressServer = http.createServer( app);
 //create our socket.io server... it will listen to our express port
 const io = socketio(expressServer,{
     cors: {
-        origin: [
-            "https://localhost",
-            //'https://192.168.32.7' //if using a phone or another computer
-        ],
+        origin:'*',
         methods: ["GET", "POST"]
     }
 });
-expressServer.listen(8181);
+expressServer.listen(8181,'0.0.0.0');
+//Bruger Render port
+const PORT = process.env.PORT || 8181;
+
+expressServer.listen(PORT,'0.0.0.0',() => {
+    console.log("Server running on port " + PORT);
+})
 
 //offers will contain {}
 const offers = [
