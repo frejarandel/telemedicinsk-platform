@@ -4,7 +4,8 @@ document.querySelector('#user-name').innerHTML = userName;
 
 //if trying it on a phone, use this instead...
 //const socket = io.connect('https://192.168.32.7:8181/',{
-const socket = io({
+//io("http://localhost:8181",{
+const socket = io("https://telemedicinsk-app.onrender.com/",{
     auth: {
         userName,
         password
@@ -15,7 +16,7 @@ socket.on('receivedIceCandidateFromServer', iceCandidate=>{addNewIceCandidate(ic
 
 }); //lyt på ICE candidates fra server
 
-socket.on('answerResponse',addAnswer); // nyt
+
 
 const localVideoEl = document.querySelector('#local-video');
 const remoteVideoEl = document.querySelector('#remote-video');
@@ -87,6 +88,8 @@ const addAnswer = async(offerObj)=>{
     await peerConnection.setRemoteDescription(offerObj.answer)
     // console.log(peerConnection.signalingState)
 }
+
+socket.on('answerResponse',addAnswer); // nyt
 
 const fetchUserMedia = ()=>{
     return new Promise(async(resolve, reject)=>{

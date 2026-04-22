@@ -1,4 +1,56 @@
+let alreadyAnswered = false;
 
+// on connection get all available offers
+socket.on('availableOffers', offers => {
+    console.log("Available offers:", offers);
+    createOfferEls(offers);
+});
+
+// new offer while already connected
+socket.on('newOfferAwaiting', offers => {
+    console.log("New offer:", offers);
+    createOfferEls(offers);
+});
+
+socket.on('answerResponse', offerObj => {
+    console.log("Answer received:", offerObj);
+
+    if (peerConnection.currentRemoteDescription) {console.log("Answer already set - ignoring");
+        return; 
+    }
+    
+
+    addAnswer(offerObj);
+});
+
+socket.on('receivedIceCandidateFromServer', iceCandidate => {
+    console.log("ICE from server:", iceCandidate);
+    addNewIceCandidate(iceCandidate);
+});
+
+function createOfferEls(offers) {
+    const answerEl = document.querySelector('#answer');
+
+    // 🔥 vigtigt: ryd gamle knapper
+    answerEl.innerHTML = "";
+
+    offers.forEach(o => {
+        const btn = document.createElement('button');
+        btn.className = "btn btn-success m-1";
+        btn.innerText = `Answer ${o.offererUserName}`;
+
+        btn.addEventListener('click', () => {
+            alreadyAnswered = false; // reset
+            answerOffer(o);
+        });
+
+        answerEl.appendChild(btn);
+    });
+}
+
+
+
+/*
 //on connection get all available offers and call createOfferEls
 socket.on('availableOffers',offers=>{
     console.log(offers)
@@ -30,4 +82,4 @@ function createOfferEls(offers){
         newOfferEl.addEventListener('click',()=>answerOffer(o))
         answerEl.appendChild(newOfferEl);
     })
-}
+}*/
