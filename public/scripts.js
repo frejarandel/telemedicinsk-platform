@@ -82,6 +82,12 @@ const answerOffer = async(offerObj)=>{
 }
 
 const addAnswer = async(offerObj)=>{
+    if (peerConnection.currentRemoteDescription)
+    {
+
+        console.log("Answer already set - skipping");
+        return;
+    }
     //addAnswer is called in socketListeners when an answerResponse is emitted.
     //at this point, the offer and answer have been exchanged!
     //now CLIENT1 needs to set the remote
