@@ -26,7 +26,7 @@ const io = socketio(expressServer,{
         methods: ["GET", "POST"]
     }
 });
-expressServer.listen(8181 , '0.0.0.0');
+
 //Bruger Render port
 const PORT = process.env.PORT || 8181;
 
