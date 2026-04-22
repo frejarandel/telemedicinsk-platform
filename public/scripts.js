@@ -11,6 +11,12 @@ const socket = io({
     }
 });
 
+socket.on('receivedIceCandidateFromServer', iceCandidate=>{addNewIceCandidate(iceCandidate);
+
+}); //lyt på ICE candidates fra server
+
+socket.on('answerResponse',addAnswer); // nyt
+
 const localVideoEl = document.querySelector('#local-video');
 const remoteVideoEl = document.querySelector('#remote-video');
 
