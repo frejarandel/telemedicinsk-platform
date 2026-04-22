@@ -119,9 +119,9 @@ const createPeerConnection = (offerObj)=>{
         //RTCPeerConnection is the thing that creates the connection
         //we can pass a config object, and that config object can contain stun servers
         //which will fetch us ICE candidates
-        peerConnection = await new RTCPeerConnection(peerConfiguration)
-        remoteStream = new MediaStream()
-        remoteVideoEl.srcObject = remoteStream;
+        peerConnection = new RTCPeerConnection(peerConfiguration)
+        //remoteStream = new MediaStream()
+        //remoteVideoEl.srcObject = remoteStream;
 
 
         localStream.getTracks().forEach(track=>{
@@ -147,13 +147,14 @@ const createPeerConnection = (offerObj)=>{
         })
         
         peerConnection.addEventListener('track',e=>{
-            console.log("Got a track from the other peer!! How excting")
-            console.log(e)
-            e.streams[0].getTracks().forEach(track=>{
-                remoteStream.addTrack(track,remoteStream);
-                console.log("Here's an exciting moment... fingers cross")
-            })
-        })
+            console.log("Got a track from the other peer!! How excting");
+            //console.log(e)
+            //e.streams[0].getTracks().forEach(track=>{
+               // remoteStream.addTrack(track,remoteStream);
+                //console.log("Here's an exciting moment... fingers cross")
+                remoteVideoEl.srcObject = e.streams[0];
+            
+        });
 
         if(offerObj){
             //this won't be set when called from call();
