@@ -95,7 +95,7 @@ const addAnswer = async(offerObj)=>{
     // console.log(peerConnection.signalingState)
 }
 
-socket.on('answerResponse',addAnswer); // nyt
+//socket.on('answerResponse',addAnswer); // nyt
 
 const fetchUserMedia = ()=>{
     return new Promise(async(resolve, reject)=>{
@@ -105,6 +105,7 @@ const fetchUserMedia = ()=>{
                 audio: true,
             });
             localVideoEl.srcObject = stream;
+            localVideoEl.muted = true; //nyt
             localStream = stream;    
             resolve();    
         }catch(err){
@@ -153,6 +154,9 @@ const createPeerConnection = (offerObj)=>{
                // remoteStream.addTrack(track,remoteStream);
                 //console.log("Here's an exciting moment... fingers cross")
                 remoteVideoEl.srcObject = e.streams[0];
+                remoteVideoEl.play().catch(err=>{ //nyt
+                    console.log("play blocked", err); //nyt
+                });
             
         });
 
