@@ -148,7 +148,7 @@ const createPeerConnection = (offerObj)=>{
         })
         
         peerConnection.addEventListener('track', e => {
-        console.log("Got a track from the other peer!! How excting",e.track.kind);
+        console.log("Track kind:", e.track.kind);
 
             remoteStream.addTrack(e.track);
             remoteVideoEl.onloadedmetadata = () => {
@@ -156,7 +156,7 @@ const createPeerConnection = (offerObj)=>{
                     console.log("play blocked", err);
                     });
                 };
-            
+            console.log("STREAN TRACKS:", remoteStream.getTracks());
         });
 
         if(offerObj){
