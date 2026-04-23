@@ -123,7 +123,13 @@ const createPeerConnection = (offerObj)=>{
         peerConnection = new RTCPeerConnection(peerConfiguration)
         remoteStream = new MediaStream()
         remoteVideoEl.srcObject = remoteStream;
+        remoteVideoEl.muted = true;
 
+        remoteVideoEl.onloadedmetadata = () => {
+                remoteVideoEl.play().catch(err => {
+                    console.log("play blocked", err);
+                    });
+                };
 
         localStream.getTracks().forEach(track=>{
             //add localtracks so that they can be sent once the connection is established
@@ -149,14 +155,10 @@ const createPeerConnection = (offerObj)=>{
         
         peerConnection.addEventListener('track', e => {
         console.log("Track kind:", e.track.kind);
-
+            e.track.enabled = true;  //Slå track til
             remoteStream.addTrack(e.track);
-            remoteVideoEl.onloadedmetadata = () => {
-                remoteVideoEl.play().catch(err => {
-                    console.log("play blocked", err);
-                    });
-                };
-            console.log("STREAN TRACKS:", remoteStream.getTracks());
+            
+            console.log("STREAM TRACKS:", remoteStream.getTracks());
         });
 
         if(offerObj){
