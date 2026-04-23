@@ -22,7 +22,7 @@ const localVideoEl = document.querySelector('#local-video');
 const remoteVideoEl = document.querySelector('#remote-video');
 
 let localStream; //a var to hold the local video stream
-let remoteStream; //a var to hold the remote video stream
+//let remoteStream; //a var to hold the remote video stream
 let peerConnection; //the peerConnection that the two clients use to talk
 let didIOffer = false;
 
@@ -153,8 +153,10 @@ const createPeerConnection = (offerObj)=>{
             //e.streams[0].getTracks().forEach(track=>{
                // remoteStream.addTrack(track,remoteStream);
                 //console.log("Here's an exciting moment... fingers cross")
+            if(!remoteVideoEl.srcObject) {
                 remoteVideoEl.srcObject = e.streams[0];
-                remoteVideoEl.onloademetadata = () => {
+                
+                remoteVideoEl.onloadedmetadata = () => {
                     remoteVideoEl.play().catch(err=>{ //nyt
                     console.log("play blocked", err); //nyt
                 });
