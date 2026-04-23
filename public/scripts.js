@@ -36,8 +36,8 @@ let peerConfiguration = {
             username: "openrelayproject",
             credential: "openrelayproject"
         }
-    ],
-    iceTransportPolicy: "relay"
+    ]
+    
 };
 
 
