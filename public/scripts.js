@@ -27,17 +27,18 @@ let peerConnection; //the peerConnection that the two clients use to talk
 let didIOffer = false;
 
 let peerConfiguration = {
-    iceServers:[
-       {
-            urls: 'stun:stun.l.google.com:19302'
+    iceServers: [
+        {
+            urls: "stun:stun.l.google.com:19302"
         },
         {
-            urls: 'turn:openrelay.metered.ca:80',
-            username: 'openrelayproject',
-            credential: 'openrelayproject'
+            urls: "turn:global.relay.metered.ca:80",
+            username: "openrelayproject",
+            credential: "openrelayproject"
         }
-    ]
-}
+    ],
+    iceTransportPolicy: "relay"
+};
 
 
 //when a client initiates a call
