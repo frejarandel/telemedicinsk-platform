@@ -147,22 +147,18 @@ const createPeerConnection = (offerObj)=>{
             }
         })
         
-        peerConnection.addEventListener('track',e=>{
-            console.log("Got a track from the other peer!! How excting");
-            //console.log(e)
-            //e.streams[0].getTracks().forEach(track=>{
-               // remoteStream.addTrack(track,remoteStream);
-                //console.log("Here's an exciting moment... fingers cross")
-            if(!remoteVideoEl.srcObject) {
-                remoteVideoEl.srcObject = e.streams[0];
-                
-                remoteVideoEl.onloadedmetadata = () => {
-                    remoteVideoEl.play().catch(err=>{ //nyt
-                    console.log("play blocked", err); //nyt
-                });
+        peerConnection.addEventListener('track', e => {
+        console.log("Got a track from the other peer!! How excting");
+
+        if (!remoteVideoEl.srcObject) {
+        remoteVideoEl.srcObject = e.streams[0];
+
+        remoteVideoEl.onloadedmetadata = () => {
+            remoteVideoEl.play().catch(err => {
+                console.log("play blocked", err);
+                    });
                 };
-                
-            
+            }
         });
 
         if(offerObj){
