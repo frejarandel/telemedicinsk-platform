@@ -151,7 +151,15 @@ const createPeerConnection = (offerObj)=>{
                     didIOffer,
                 })    
             }
-        })
+        });
+
+        peerConnection.addEventListener('connectionstatechange', () => {
+            console.log("CONNECTION STATE:", peerConnection.connectionState);
+        });
+
+        peerConnection.addEventListener('iceconnectionstatechange', () => {
+            console.log("ICE STATE:", peerConnection.iceConnectionState);
+        });
         
         peerConnection.addEventListener('track', e => {
         console.log("Track kind:", e.track.kind);
