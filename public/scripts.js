@@ -154,6 +154,7 @@ const createPeerConnection = (offerObj)=>{
                // remoteStream.addTrack(track,remoteStream);
                 //console.log("Here's an exciting moment... fingers cross")
                 remoteVideoEl.srcObject = e.streams[0];
+                
                 remoteVideoEl.play().catch(err=>{ //nyt
                     console.log("play blocked", err); //nyt
                 });
