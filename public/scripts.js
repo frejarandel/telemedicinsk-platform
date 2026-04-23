@@ -22,7 +22,7 @@ const localVideoEl = document.querySelector('#local-video');
 const remoteVideoEl = document.querySelector('#remote-video');
 
 let localStream; //a var to hold the local video stream
-//let remoteStream; //a var to hold the remote video stream
+let remoteStream; //a var to hold the remote video stream
 let peerConnection; //the peerConnection that the two clients use to talk
 let didIOffer = false;
 
@@ -121,8 +121,8 @@ const createPeerConnection = (offerObj)=>{
         //we can pass a config object, and that config object can contain stun servers
         //which will fetch us ICE candidates
         peerConnection = new RTCPeerConnection(peerConfiguration)
-        //remoteStream = new MediaStream()
-        //remoteVideoEl.srcObject = remoteStream;
+        remoteStream = new MediaStream()
+        remoteVideoEl.srcObject = remoteStream;
 
 
         localStream.getTracks().forEach(track=>{
@@ -148,17 +148,15 @@ const createPeerConnection = (offerObj)=>{
         })
         
         peerConnection.addEventListener('track', e => {
-        console.log("Got a track from the other peer!! How excting");
+        console.log("Got a track from the other peer!! How excting",e.track.kind);
 
-        if (!remoteVideoEl.srcObject) {
-        remoteVideoEl.srcObject = e.streams[0];
-
-        remoteVideoEl.onloadedmetadata = () => {
-            remoteVideoEl.play().catch(err => {
-                console.log("play blocked", err);
+            remoteStream.addTrack(e.track);
+            remoteVideoEl.onloadedmetadata = () => {
+                remoteVideoEl.play().catch(err => {
+                    console.log("play blocked", err);
                     });
                 };
-            }
+            
         });
 
         if(offerObj){
