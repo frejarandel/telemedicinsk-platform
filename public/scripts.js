@@ -124,7 +124,7 @@ const createPeerConnection = (offerObj)=>{
         peerConnection = new RTCPeerConnection(peerConfiguration)
         remoteStream = new MediaStream()
         remoteVideoEl.srcObject = remoteStream;
-        remoteVideoEl.muted = true;
+        remoteVideoEl.muted = false;
 
         remoteVideoEl.onloadedmetadata = () => {
                 remoteVideoEl.play().catch(err => {
